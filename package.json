@@ -1,22 +1,22 @@
 {
-  "name": "sds-fullstack-project",
-  "version": "1.0.0",
-  "description": "This project is for SDS FullStack course",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Rikuliini1/SDS-FullStack-Project.git"
-  },
-  "author": "JI",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Rikuliini1/SDS-FullStack-Project/issues"
-  },
-  "homepage": "https://github.com/Rikuliini1/SDS-FullStack-Project#readme",
-  "devDependencies": {
-    "concurrently": "^9.2.0"
-  }
+	"name": "sds-fullstack-project",
+	"version": "1.0.0",
+	"description": "This project is for SDS FullStack course",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Rikuliini1/SDS-FullStack-Project.git"
+	},
+	"author": "JI",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/Rikuliini1/SDS-FullStack-Project/issues"
+	},
+	"homepage": "https://github.com/Rikuliini1/SDS-FullStack-Project#readme",
+	"devDependencies": {
+		"concurrently": "^9.2.0"
+	}
 }
