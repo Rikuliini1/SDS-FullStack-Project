@@ -18,33 +18,6 @@ It’s one of the most popular Node.js frameworks due to its simplicity and powe
 - It provides just enough structure without being too opinionated.
 - Perfect for RESTful APIs, single-page apps, and full-stack projects.
 
-# express-async-handler
-
-The express-async-handler package is a small utility that simplifies error handling in async route handlers when using Express.
-
-### express-async-handler Installation:
-    npm install express-async-handler
-
-### The Problem:
-When using async functions in Express routes, unhandled errors inside await calls don't automatically go to Express's error handler.
-
-### The Solution:
-This package wraps your async functions and forwards errors to Express’s default error-handling middleware.
-
-### How It Works:
-Internally, express-async-handler just catches any promise rejections or exceptions and passes them to next().
-
-### express-async-handler Features:
-- Error forwarding - Catches errors in async routes automatically
-- Cleaner code - Removes need for repetitive try/catch blocks
-- Works with Express - Designed specifically for Express
-- Helps with async/await - Especially useful with Mongoose, I/O, etc.
-
-### When Should You Use It?
-- When writing async route handlers in Express
-- When you want cleaner, more readable code without tons of try/catch blocks
-- When using MongoDB (Mongoose), file I/O, or any async service
-
 # dotenv
 
 The dotenv package is a zero-dependency module that loads environment variables from a .env file into process.env in Node.js projects.
