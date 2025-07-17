@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaUser } from 'react-icons/fa'
 import { toast} from 'react-toastify'
@@ -17,18 +17,20 @@ function Register() {
 	})
     const { email, password, password2 } = formData
 
-    const { user, isLoading, isSuccess, isError, message } = useSelector((state) => state.user)
+    const { isSuccess, isError, message } = useSelector((state) => state.user)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         if (isError) {
             toast.error(message)
+            setIsLoading(false)
         }
         if (isSuccess) {
             toast.success(message)
             navigate('/login')
         }
         dispatch(resetUserState())
-    }, [isSuccess, isError, message, navigate, dispatch])
+    }, [isSuccess, isError, navigate, dispatch])
 
     const onChange = (event) => {
 		setFormData((prevState) => ({
@@ -44,6 +46,7 @@ function Register() {
 		} else {
 			const userData = { email, password }
 			dispatch(registerUser(userData))
+            setIsLoading(true)
 		}
 	}
 

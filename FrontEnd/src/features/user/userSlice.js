@@ -16,11 +16,10 @@ const initialState = {
 export const registerUser = createAsyncThunk('user/register', async (user, thunkAPI) => {
     try {
         const response = await userService.registerUser(user)
-        console.log('slice:', response)
-        return response
+        return response.successMessage
     } catch (error) {
-        const message = error.response?.data?.errorMessage || error.message || error.toString()
-        return thunkAPI.rejectWithValue(message)
+        const errorMessage = error.response.data.errorMessage
+        return thunkAPI.rejectWithValue(errorMessage)
     }
 })
 

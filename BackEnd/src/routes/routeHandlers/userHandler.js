@@ -9,7 +9,6 @@ const registerUser = async (req, res) => {
     try {
         console.log(`Request to ${req.method} route ${req.originalUrl}`.cyan)
         console.log('    Registering new user...'.yellow)
-        // throw new Error('test error')
 
         const { email, password } = req.body || {}
 
