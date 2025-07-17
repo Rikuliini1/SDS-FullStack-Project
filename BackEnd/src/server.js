@@ -1,6 +1,6 @@
 import express from 'express'
 import dotenv from 'dotenv'
-import colors from 'colors'
+import 'colors'
 import connectToDatabase from './database/initDB.js'
 import userRouter from './routes/userRoutes.js'
 import listRouter from './routes/listRoutes.js'
@@ -31,5 +31,3 @@ async function initialize() {
 initialize()
 
 // EOF
-
-// throw new Error('test error'.magenta)

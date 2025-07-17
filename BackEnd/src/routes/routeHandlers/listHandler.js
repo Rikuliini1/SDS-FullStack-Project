@@ -4,27 +4,53 @@ import ListModel from '../../database/models/listModel.js'
 // @route   GET /api/list/get_lists
 // @access  Private
 const getLists = async (req, res) => {
-    console.log('    Doing stuff...'.yellow)
-    // TODO
-    console.log('        Successful GET request to get all lists\n'.green)
+    try {
+        console.log('    Getting all lists...'.yellow)
+        const lists = await ListModel.find({ user: req.user.id })
+        console.log(`        Successfully got all lists\n`.green)
+        res.status(200).json(lists)
+    } catch (error) {
+        console.log('        Failed to get all lists\n'.red)
+        console.log(error)
+        res.status(500).json({ errorMessage: 'Failed to get all lists' })
+    }
 }
 
 // @desc    Create a new list
 // @route   POST /api/list/create_list
 // @access  Private
 const createList = async (req, res) => {
-    console.log('    Doing stuff...'.yellow)
-    // TODO
-    console.log('        Successful POST request to create a new list\n'.green)
+    try {
+        console.log('    Creating a new list...'.yellow)
+
+        const { topic, first, second, third } = req.body || {}
+
+        // Check for missing data
+        if (!topic || !first || !second || !third) {
+            const missingFields = []
+            if (!topic) missingFields.push('topic')
+            if (!first) missingFields.push('first')
+            console.log(`        User not logged in, missing data (${missingFields.join(', ')})\n`.red)
+            return res.status(400).json({ failMessage: `User not logged in, missing data (${missingFields.join(', ')})` })
+        }
+
+        console.log(`        Successfully created a new list\n`.green)
+    } catch (error) {
+        
+    }
 }
 
 // @desc    Delete a list
-// @route   DELETE /api/list/delete_list
+// @route   DELETE /api/list/delete_list/:id
 // @access  Private
 const deleteList = async (req, res) => {
-    console.log('    Doing stuff...'.yellow)
-    // TODO
-    console.log('        Successful DELETE request to delete a list\n'.green)
+    try {
+        console.log('    Deleting a list...'.yellow)
+
+        console.log(`        Successfully deleted a list\n`.green)
+    } catch (error) {
+        
+    }
 }
 
 export { getLists, createList, deleteList }

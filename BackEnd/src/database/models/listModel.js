@@ -8,19 +8,19 @@ const listSchema = mongoose.Schema({
     },
     topic: {
         type: String,
-        required: [true, 'Please add a topic to listSchema']
+        required: [true, 'Please add a topic for listSchema']
     },
     firstItem: {
         type: String,
-        required: [true, 'Please add the first item to listSchema']
+        required: [true, 'Please add the first item for listSchema']
     },
     secondItem: {
         type: String,
-        required: [true, 'Please add the second item to listSchema']
+        required: [true, 'Please add the second item for listSchema']
     },
     thirdItem: {
         type: String,
-        required: [true, 'Please add the third item to listSchema']
+        required: [true, 'Please add the third item for listSchema']
     }
 }, {
     timestamps: true,
