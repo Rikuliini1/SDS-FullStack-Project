@@ -4,7 +4,7 @@
 	"description": "This project is for SDS FullStack course",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"app": "concurrently \"npm run server --prefix BackEnd\" \"npm run client --prefix FrontEnd\""
 	},
 	"repository": {
 		"type": "git",
