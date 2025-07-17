@@ -1,18 +1,30 @@
-import { useState } from 'react'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import Header from './components/Header.jsx'
+import Dashboard from './pages/Dashboard.jsx'
+import Register from './pages/Register.jsx'
+import Login from './pages/Login.jsx'
 
 function App() {
-	const [count, setCount] = useState(0)
-
-	return (
+	const COMPONENT = (
 		<>
-			<h1>MyTop3</h1>
-			<div className="card">
-				<button onClick={() => setCount((count) => count + 1)}>
-					count is {count}
-				</button>
+		<BrowserRouter>
+			<div className="container">
+				<Header/>
+				<Routes>
+					<Route path='/' element={<Navigate to='/dashboard'/>}/>
+					<Route path='/dashboard' element={<Dashboard/>}/>
+					<Route path='/register' element={<Register/>}/>
+					<Route path='/login' element={<Login/>}/>
+				</Routes>
 			</div>
+		</BrowserRouter>
+		<ToastContainer/>
 		</>
 	)
+
+	return COMPONENT
 }
 
 export default App
