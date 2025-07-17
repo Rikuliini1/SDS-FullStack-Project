@@ -10,15 +10,15 @@ const listSchema = mongoose.Schema({
         type: String,
         required: [true, 'Please add a topic for listSchema']
     },
-    firstItem: {
+    first: {
         type: String,
         required: [true, 'Please add the first item for listSchema']
     },
-    secondItem: {
+    second: {
         type: String,
         required: [true, 'Please add the second item for listSchema']
     },
-    thirdItem: {
+    third: {
         type: String,
         required: [true, 'Please add the third item for listSchema']
     }

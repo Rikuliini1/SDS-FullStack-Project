@@ -30,13 +30,27 @@ const createList = async (req, res) => {
             const missingFields = []
             if (!topic) missingFields.push('topic')
             if (!first) missingFields.push('first')
-            console.log(`        User not logged in, missing data (${missingFields.join(', ')})\n`.red)
-            return res.status(400).json({ failMessage: `User not logged in, missing data (${missingFields.join(', ')})` })
+            if (!second) missingFields.push('second')
+            if (!third) missingFields.push('third')
+            console.log(`        New list not created, missing data (${missingFields.join(', ')})\n`.red)
+            return res.status(400).json({ failMessage: `New list not created, missing data (${missingFields.join(', ')})` })
         }
 
+        // Create a new list
+        const newList = await ListModel.create({
+            user: req.user.id,
+            topic, first, second, third
+        })
+
         console.log(`        Successfully created a new list\n`.green)
+        res.status(201).json({
+            successMessage: 'Successfully created a new list',
+            newList: { user: newList.user, topic, first, second, third }
+        })
     } catch (error) {
-        
+        console.log('        Failed to create a new list\n'.red)
+        console.log(error)
+        res.status(500).json({ errorMessage: 'Failed to create a new list' })   
     }
 }
 

@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcryptjs from 'bcryptjs'
 import UserModel from '../../database/models/userModel.js'
 
-// @desc    Register new user to database
+// @desc    Register a new user to database
 // @route   POST /api/users/register_user
 // @access  Public
 const registerUser = async (req, res) => {
@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
         const salt = await bcryptjs.genSalt(10)
         const hashedPassword = await bcryptjs.hash(password, salt)
 
-        // Create new user
+        // Create a new user
         const newUser = await UserModel.create({
             email,
             password: hashedPassword
