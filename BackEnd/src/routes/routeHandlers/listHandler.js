@@ -6,9 +6,12 @@ import ListModel from '../../database/models/listModel.js'
 const getLists = async (req, res) => {
     try {
         console.log('    Getting all lists...'.yellow)
-        const lists = await ListModel.find({ user: req.user.id })
+
+        // Get lists
+        const lists = await ListModel.find({ userId: req.user.id })
+
         console.log(`        Successfully got all lists\n`.green)
-        res.status(200).json(lists)
+        res.status(200).json({ successMessage: 'Successfully got all lists', lists })
     } catch (error) {
         console.log('        Failed to get all lists\n'.red)
         console.log(error)
@@ -38,19 +41,19 @@ const createList = async (req, res) => {
 
         // Create a new list
         const newList = await ListModel.create({
-            user: req.user.id,
+            userId: req.user.id,
             topic, first, second, third
         })
 
         console.log(`        Successfully created a new list\n`.green)
         res.status(201).json({
             successMessage: 'Successfully created a new list',
-            newList: { user: newList.user, topic, first, second, third }
+            newList: { userId: newList.userId, topic, first, second, third }
         })
     } catch (error) {
         console.log('        Failed to create a new list\n'.red)
         console.log(error)
-        res.status(500).json({ errorMessage: 'Failed to create a new list' })   
+        res.status(500).json({ errorMessage: 'Failed to create a new list' })
     }
 }
 
@@ -61,9 +64,41 @@ const deleteList = async (req, res) => {
     try {
         console.log('    Deleting a list...'.yellow)
 
+        const listId = req.params.id
+
+        // Check if list exists
+        const list = await findList(listId)
+        if (!list) {
+            console.log('        List not deleted, not found\n'.red)
+            return res.status(404).json({ failMessage: 'List not deleted, not found' })
+        }
+
+        // Check if logged in user id and list user id match
+        if (list.userId.toString() !== req.user.id) {
+            console.log('        List not deleted, user id does not match\n'.red)
+            return res.status(401).json({ failMessage: 'List not deleted, user id does not match' })
+        }
+
+        // Delete the list
+        await list.deleteOne()
+
         console.log(`        Successfully deleted a list\n`.green)
+        res.status(200).json({
+            successMessage: 'Successfully deleted a list',
+            listId
+        })
     } catch (error) {
-        
+        console.log('        Failed to delete a list\n'.red)
+        console.log(error)
+        res.status(500).json({ errorMessage: 'Failed to delete a list' })
+    }
+}
+
+const findList = async (listId) => {
+    try {
+        return await ListModel.findById(listId)
+    } catch (error) {
+        return null
     }
 }
 
