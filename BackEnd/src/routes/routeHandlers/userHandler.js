@@ -9,6 +9,7 @@ const registerUser = async (req, res) => {
     try {
         console.log(`Request to ${req.method} route ${req.originalUrl}`.cyan)
         console.log('    Registering new user...'.yellow)
+        // throw new Error('test error')
 
         const { email, password } = req.body || {}
 
@@ -18,14 +19,14 @@ const registerUser = async (req, res) => {
             if (!email) missingFields.push('email')
             if (!password) missingFields.push('password')
             console.log(`        User not registered, missing data (${missingFields.join(', ')})\n`.red)
-            return res.status(400).json({ failMessage: `User not registered, missing data (${missingFields.join(', ')})` })
+            return res.status(400).json({ errorMessage: `User not registered, missing data (${missingFields.join(', ')})` })
         }
 
         // Check if user already exists
         const existingUser = await UserModel.findOne({ email })
         if (existingUser) {
             console.log('        User not registered, email already in use\n'.red)
-            return res.status(400).json({ failMessage: 'User not registered, email already in use' })
+            return res.status(409).json({ errorMessage: 'User not registered, email already in use' })
         }
 
         // Hash password
@@ -45,9 +46,9 @@ const registerUser = async (req, res) => {
             email
         })
     } catch (error) {
-        console.log('        Failed to register new user\n'.red)
+        console.log('        An unexpected server error occurred\n'.red)
         console.log(error)
-        res.status(500).json({ errorMessage: 'Failed to register new user' })
+        res.status(500).json({ errorMessage: 'An unexpected server error occurred' })
     }
 }
 
@@ -67,21 +68,21 @@ const loginUser = async (req, res) => {
             if (!email) missingFields.push('email')
             if (!password) missingFields.push('password')
             console.log(`        User not logged in, missing data (${missingFields.join(', ')})\n`.red)
-            return res.status(400).json({ failMessage: `User not logged in, missing data (${missingFields.join(', ')})` })
+            return res.status(400).json({ errorMessage: `User not logged in, missing data (${missingFields.join(', ')})` })
         }
 
         // Check if user exists
         const existingUser = await UserModel.findOne({ email })
         if (!existingUser) {
             console.log('        User not logged in, email not found\n'.red)
-            return res.status(400).json({ failMessage: 'User not logged in, email not found' })
+            return res.status(404).json({ errorMessage: 'User not logged in, email not found' })
         }
 
         // Check if passwords match
         const matchingPasswords = await bcryptjs.compare(password, existingUser.password)
         if (!matchingPasswords) {
             console.log('        User not logged in, incorrect password\n'.red)
-            return res.status(400).json({ failMessage: 'User not logged in, incorrect password' })
+            return res.status(401).json({ errorMessage: 'User not logged in, incorrect password' })
         }
 
         console.log(`        Successful user login\n`.green)
@@ -92,9 +93,9 @@ const loginUser = async (req, res) => {
             token: generateToken(existingUser.id)
         })
     } catch (error) {
-        console.log('        Failed to login user\n'.red)
+        console.log('        An unexpected server error occurred\n'.red)
         console.log(error)
-        res.status(500).json({ errorMessage: 'Failed to login user' })
+        res.status(500).json({ errorMessage: 'An unexpected server error occurred' })
     }
 }
 

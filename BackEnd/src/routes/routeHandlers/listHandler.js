@@ -13,9 +13,9 @@ const getLists = async (req, res) => {
         console.log(`        Successfully got all lists\n`.green)
         res.status(200).json({ successMessage: 'Successfully got all lists', lists })
     } catch (error) {
-        console.log('        Failed to get all lists\n'.red)
+        console.log('        An unexpected server error occurred\n'.red)
         console.log(error)
-        res.status(500).json({ errorMessage: 'Failed to get all lists' })
+        res.status(500).json({ errorMessage: 'An unexpected server error occurred' })
     }
 }
 
@@ -36,7 +36,7 @@ const createList = async (req, res) => {
             if (!second) missingFields.push('second')
             if (!third) missingFields.push('third')
             console.log(`        New list not created, missing data (${missingFields.join(', ')})\n`.red)
-            return res.status(400).json({ failMessage: `New list not created, missing data (${missingFields.join(', ')})` })
+            return res.status(400).json({ errorMessage: `New list not created, missing data (${missingFields.join(', ')})` })
         }
 
         // Create a new list
@@ -51,9 +51,9 @@ const createList = async (req, res) => {
             newList: { userId: newList.userId, topic, first, second, third }
         })
     } catch (error) {
-        console.log('        Failed to create a new list\n'.red)
+        console.log('        An unexpected server error occurred\n'.red)
         console.log(error)
-        res.status(500).json({ errorMessage: 'Failed to create a new list' })
+        res.status(500).json({ errorMessage: 'An unexpected server error occurred' })
     }
 }
 
@@ -70,13 +70,13 @@ const deleteList = async (req, res) => {
         const list = await findList(listId)
         if (!list) {
             console.log('        List not deleted, not found\n'.red)
-            return res.status(404).json({ failMessage: 'List not deleted, not found' })
+            return res.status(404).json({ errorMessage: 'List not deleted, not found' })
         }
 
         // Check if logged in user id and list user id match
         if (list.userId.toString() !== req.user.id) {
             console.log('        List not deleted, user id does not match\n'.red)
-            return res.status(401).json({ failMessage: 'List not deleted, user id does not match' })
+            return res.status(403).json({ errorMessage: 'List not deleted, user id does not match' })
         }
 
         // Delete the list
@@ -88,9 +88,9 @@ const deleteList = async (req, res) => {
             listId
         })
     } catch (error) {
-        console.log('        Failed to delete a list\n'.red)
+        console.log('        An unexpected server error occurred\n'.red)
         console.log(error)
-        res.status(500).json({ errorMessage: 'Failed to delete a list' })
+        res.status(500).json({ errorMessage: 'An unexpected server error occurred' })
     }
 }
 

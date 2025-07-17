@@ -7,6 +7,7 @@ import Register from './pages/Register.jsx'
 import Login from './pages/Login.jsx'
 
 function App() {
+
 	const COMPONENT = (
 		<>
 		<BrowserRouter>
@@ -18,9 +19,9 @@ function App() {
 					<Route path='/register' element={<Register/>}/>
 					<Route path='/login' element={<Login/>}/>
 				</Routes>
+				<ToastContainer/>
 			</div>
 		</BrowserRouter>
-		<ToastContainer/>
 		</>
 	)
 

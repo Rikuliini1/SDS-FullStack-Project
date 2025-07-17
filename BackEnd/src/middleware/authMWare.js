@@ -9,7 +9,7 @@ const authMiddleware = async (req, res, next) => {
         // Check for token
         if (!req.headers.authorization || !req.headers.authorization.startsWith('Bearer')) {
             console.log('        Not authorized, no token\n'.red)
-            return res.status(401).json({ failMessage: 'Not authorized, no token' })
+            return res.status(400).json({ failMessage: 'Not authorized, no token' })
         }
 
         // Get token from header
@@ -19,14 +19,14 @@ const authMiddleware = async (req, res, next) => {
         const verifiedToken = verifyToken(token)
         if (!verifiedToken) {
             console.log('        Not authorized, failed to verify token\n'.red)
-            return res.status(401).json({ failMessage: 'Not authorized, failed to verify token' })
+            return res.status(409).json({ failMessage: 'Not authorized, failed to verify token' })
         }
 
         // Check if user exists
         const existingUser = await UserModel.findById(verifiedToken.userId).select('-password')
         if (!existingUser) {
             console.log('        Not authorized, user not found\n'.red)
-            return res.status(401).json({ failMessage: 'Not authorized, user not found' })
+            return res.status(404).json({ failMessage: 'Not authorized, user not found' })
         }
 
         console.log('        User authenticated'.green)
