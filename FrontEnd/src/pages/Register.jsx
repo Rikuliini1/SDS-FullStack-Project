@@ -17,20 +17,19 @@ function Register() {
 	})
     const { email, password, password2 } = formData
 
-    const { isSuccess, isError, message } = useSelector((state) => state.user)
-    const [isLoading, setIsLoading] = useState(false)
+    const { isLoading, justRegistered, gotError, message } = useSelector((state) => state.user)
 
     useEffect(() => {
-        if (isError) {
-            toast.error(message)
-            setIsLoading(false)
-        }
-        if (isSuccess) {
+        if (justRegistered) {
             toast.success(message)
             navigate('/login')
         }
-        dispatch(resetUserState())
-    }, [isSuccess, isError, navigate, dispatch])
+        if (gotError) {
+            toast.error(message)
+            dispatch(resetUserState())
+        }
+    },
+    [justRegistered, gotError, navigate, dispatch])
 
     const onChange = (event) => {
 		setFormData((prevState) => ({
@@ -44,9 +43,8 @@ function Register() {
 		if (password !== password2) {
 			toast.error('Passwords do not match')
 		} else {
-			const userData = { email, password }
-			dispatch(registerUser(userData))
-            setIsLoading(true)
+            // Register a new user (1/3)
+			dispatch(registerUser({ email, password }))
 		}
 	}
 

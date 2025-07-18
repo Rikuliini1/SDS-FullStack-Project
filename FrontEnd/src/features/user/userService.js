@@ -3,10 +3,23 @@ import axios from 'axios'
 // Register a new user (3/3)
 const registerUser = async (userData) => {
     const response = await axios.post('/api/users/register_user', userData)
-    return response.data
+    return response.data.successMessage
 }
 
-const userService = { registerUser }
+// Login user (3/3)
+const loginUser = async (userData) => {
+    const response = await axios.post('/api/users/login_user', userData)
+    localStorage.setItem('token', JSON.stringify(response.data.token))
+    return response.data.successMessage
+}
+
+// Logout user (3/3)
+const logoutUser = () => {
+    localStorage.removeItem('token')
+    return 'User logged out'
+}
+
+const userService = { registerUser, loginUser, logoutUser }
 
 export default userService
 

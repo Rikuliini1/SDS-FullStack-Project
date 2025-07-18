@@ -33,17 +33,13 @@ const registerUser = async (req, res) => {
         const hashedPassword = await bcryptjs.hash(password, salt)
 
         // Create a new user
-        const newUser = await UserModel.create({
+        await UserModel.create({
             email,
             password: hashedPassword
         })
 
         console.log('        Successful user registration\n'.green)
-        res.status(201).json({
-            successMessage: 'Successful user registration',
-            _id: newUser.id,
-            email
-        })
+        res.status(201).json({ successMessage: 'Successful user registration' })
     } catch (error) {
         console.log('        An unexpected server error occurred\n'.red)
         console.log(error)
@@ -87,8 +83,6 @@ const loginUser = async (req, res) => {
         console.log(`        Successful user login\n`.green)
         res.status(200).json({
             successMessage: 'Successful user login',
-            userId: existingUser.id,
-            email,
             token: generateToken(existingUser.id)
         })
     } catch (error) {

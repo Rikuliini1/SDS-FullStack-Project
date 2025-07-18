@@ -1,22 +1,21 @@
 import { Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
-// import { logout, resetUserState } from '../features/user/userSlice'
+import { logoutUser } from '../features/user/userSlice'
 
 function Header() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
-    const { user } = useSelector((state) => state.user)
+    const { isLoggedIn } = useSelector((state) => state.user)
 
     const onLogout = () => {
-        // dispatch(logout())
-        // dispatch(reset())
-        // navigate('/')
+        // Logout user (1/3)
+        dispatch(logoutUser())
     }
 
     // Content based on a condition
-    const CONDITIONAL_CONTENT = user ? (
+    const CONDITIONAL_CONTENT = isLoggedIn ? (
         <li><button className="btn" onClick={onLogout}><FaSignOutAlt/> Logout</button></li> 
     ) : (
         <>

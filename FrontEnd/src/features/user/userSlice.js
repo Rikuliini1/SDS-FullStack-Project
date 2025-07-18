@@ -2,24 +2,44 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import userService from './userService'
 
 // Get user from localStorage
-const user = JSON.parse(localStorage.getItem('user'))
+const token = JSON.parse(localStorage.getItem('token'))
 
 const initialState = {
-    user: user ? user : null,
+    isLoggedIn: token ? true : false,
     isLoading: false,
-    isSuccess: false,
-    isError: false,
+    justRegistered: false,
+    justLoggedIn: false,
+    justLoggedOut: false,
+    gotError: false,
     message: ''
 }
 
 // Register a new user (2/3)
-export const registerUser = createAsyncThunk('user/register', async (user, thunkAPI) => {
+export const registerUser = createAsyncThunk('user/register', async (userData, thunkAPI) => {
     try {
-        const response = await userService.registerUser(user)
-        return response.successMessage
+        return await userService.registerUser(userData)
     } catch (error) {
         const errorMessage = error.response.data.errorMessage
         return thunkAPI.rejectWithValue(errorMessage)
+    }
+})
+
+// Login user (2/3)
+export const loginUser = createAsyncThunk('user/login', async (userData, thunkAPI) => {
+    try {
+        return await userService.loginUser(userData)
+    } catch (error) {
+        const errorMessage = error.response.data.errorMessage
+        return thunkAPI.rejectWithValue(errorMessage)
+    }
+})
+
+// Logout user (2/3)
+export const logoutUser = createAsyncThunk('user/logout', async (_, thunkAPI) => {
+    try {
+        return userService.logoutUser()
+    } catch (error) {
+        return thunkAPI.rejectWithValue('Logout failed')
     }
 })
 
@@ -29,8 +49,10 @@ const userSlice = createSlice({
     reducers: {
         resetUserState: (state) => {
             state.isLoading = false
-            state.isSuccess = false
-            state.isError = false
+            state.justRegistered = false
+            state.justLoggedIn = false
+            state.justLoggedOut = false
+            state.gotError = false
             state.message = ''
         }
     }, extraReducers: (builder) => {
@@ -39,13 +61,33 @@ const userSlice = createSlice({
                 state.isLoading = true
             })
             .addCase(registerUser.fulfilled, (state, action) => {
-                state.isLoading = false
-                state.isSuccess = true
+                state.justRegistered = true
                 state.message = action.payload
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.isLoading = false
-                state.isError = true
+                state.gotError = true
+                state.message = action.payload
+            })
+            .addCase(loginUser.pending, (state) => {
+                state.isLoading = true
+            })
+            .addCase(loginUser.fulfilled, (state, action) => {
+                state.justLoggedIn = true
+                state.isLoggedIn = true
+                state.message = action.payload
+            })
+            .addCase(loginUser.rejected, (state, action) => {
+                state.isLoading = false
+                state.gotError = true
+                state.message = action.payload
+            })
+            .addCase(logoutUser.fulfilled, (state, action) => {
+                state.justLoggedOut = true
+                state.isLoggedIn = false
+                state.message = action.payload
+            })
+            .addCase(logoutUser.rejected, (state, action) => {
                 state.message = action.payload
             })
     }
