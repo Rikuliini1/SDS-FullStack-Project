@@ -15,8 +15,12 @@ const loginUser = async (userData) => {
 
 // Logout user (3/3)
 const logoutUser = () => {
-    localStorage.removeItem('token')
-    return 'User logged out'
+    if (localStorage.getItem('token')) {
+        localStorage.removeItem('token')
+        return 'User logged out'
+    } else {
+        throw Error()
+    }
 }
 
 const userService = { registerUser, loginUser, logoutUser }

@@ -89,6 +89,8 @@ const userSlice = createSlice({
             })
             .addCase(logoutUser.rejected, (state, action) => {
                 state.message = action.payload
+                state.gotError = true
+                state.message = action.payload
             })
     }
 })

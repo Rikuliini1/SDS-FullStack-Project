@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useNavigate, Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaUser } from 'react-icons/fa'
 import { toast} from 'react-toastify'
@@ -17,9 +17,12 @@ function Register() {
 	})
     const { email, password, password2 } = formData
 
-    const { isLoading, justRegistered, gotError, message } = useSelector((state) => state.user)
+    const { isLoggedIn, isLoading, justRegistered, gotError, message } = useSelector((state) => state.user)
 
     useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/dashboard')
+        }
         if (justRegistered) {
             toast.success(message)
             navigate('/login')
@@ -58,25 +61,27 @@ function Register() {
         </section>
         <section className="form">
             <form onSubmit={onSubmit}>
-				<div className="form-group">
-					<input type="email" className="form-control" id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange}/>
-				</div>
-				<div className="form-group">
-					<input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange}/>
-				</div>
-				<div className="form-group">
-					<input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm password' onChange={onChange}/>
-				</div>
-				<div className="form-group">
-					<button type="submit" className="btn btn-block">Submit</button>
-				</div>
+                <div className="form-group">
+                    <input type="email" className="form-control" id='email' name='email' value={email} placeholder='Enter your email' onChange={onChange}/>
+                </div>
+                <div className="form-group">
+                    <input type="password" className="form-control" id='password' name='password' value={password} placeholder='Enter your password' onChange={onChange}/>
+                </div>
+                <div className="form-group">
+                    <input type="password" className="form-control" id='password2' name='password2' value={password2} placeholder='Confirm password' onChange={onChange}/>
+                </div>
+                <div className="form-group">
+                    <button type="submit" className="btn btn-block">Submit</button>
+                </div>
             </form>
         </section>
         </>
     )
 
-    // The final component structure
-    const COMPONENT = (
+    const COMPONENT = isLoggedIn ? (
+        <>
+        </>
+    ) : (
         <>
         {CONDITIONAL_CONTENT}
         </>

@@ -1,10 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa'
 import { logoutUser } from '../features/user/userSlice'
 
 function Header() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
 
     const { isLoggedIn } = useSelector((state) => state.user)
@@ -14,7 +13,6 @@ function Header() {
         dispatch(logoutUser())
     }
 
-    // Content based on a condition
     const CONDITIONAL_CONTENT = isLoggedIn ? (
         <li><button className="btn" onClick={onLogout}><FaSignOutAlt/> Logout</button></li> 
     ) : (
@@ -24,7 +22,6 @@ function Header() {
         </>
     )
 
-    // The final component structure
     const COMPONENT = (
         <header className="header">
             <div className="logo">

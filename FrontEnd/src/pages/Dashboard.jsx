@@ -21,7 +21,6 @@ function Dashboard() {
         if (justLoggedOut) {
             toast.success(message)
             dispatch(resetUserState())
-            navigate('/')
         }
         if (gotError) {
             toast.error(message)
